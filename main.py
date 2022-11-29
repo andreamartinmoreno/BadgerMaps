@@ -11,60 +11,65 @@ df = pd.read_csv('sampletest1.csv')
 #Edit object typo from date types
 df["Last Check-In Date"] = pd.to_datetime(df["Last Check-In Date"],
                                           infer_datetime_format=True)
+print('OUR DATAFRAME \n')
 print(df, '\n')
 
+#Exceptions
+#Testing for specified fields
+print('Exceptions \n')
 for n in range(len(df)):
- if(df.isnull().iloc[n]['Street']):
-  print('Street of this register',n,'is empty')
- if(df.isnull().iloc[n]['Zip']):
-  print('Zip of this register: ',n,' is empty')
- if(df.isnull().iloc[n]['City']):
-  print('City of this register: ',n,' is empty')
- if(df.isnull().iloc[n]['Last Check-In Date']):
-  print('Last Check-In Date of this register: ',n,' is empty')
- if(df.isnull().iloc[n]['Company']):
-  print('Company of this register: ',n,' is empty')
+  if (df.isna().iloc[n]['Street']):
+    print('Street of this register', n, 'is empty')
+  if (df.isna().iloc[n]['Zip']):
+    print('Zip of this register: ', n, ' is empty')
+  if (df.isna().iloc[n]['City']):
+    print('City of this register: ', n, ' is empty')
+  if (df.isna().iloc[n]['Last Check-In Date']):
+    print('Last Check-In Date of this register: ', n, ' is empty')
+  if (df.isna().iloc[n]['Company']):
+    print('Company of this register: ', n, ' is empty')
 print('\n')
 
 
+#Testing for empty rows
+shape=df.shape
+x=0
+for n in range(len(df)):
+  for m in range(shape[1]):
+    if df.isna().iloc[n,m]:
+      x+=1
+    if x==shape[1]:
+      print('Row number:',n,'is empty hola. \n')
+  x=0
+
+#Testing for empty fields
+for a in range(len(df)):
+  for b in range(shape[1]):
+    if df.isna().iloc[a,b]:
+      print('The row', a, 'contains field:', df.columns[b], 'empty')
+      
+      
 #Tasks
 
 #Retrieve the customer with the earliest check in date
-df.sort_values(by=["Last Check-In Date"], inplace=True)
-if(df.isnull().iloc[0,2]):
-  print('Street of this register is empty')
-if(df.isnull().iloc[0,3]):
-  print('Zip of this register is empty')
-if(df.isnull().iloc[0,4]):
-  print('City of this register is empty')
-if(df.isnull().iloc[0,6]):
-  print('Last Check-in Date of this register is empty')
-if(df.isnull().iloc[0,9]):
-  print('Company of this register is empty')
-  
+print('Tasks \n\n')
+print('Retrieve the customer with the earliest check in date \n')
+df.sort_values(by=["Last Check-In Date"], inplace=True) 
 print(df.iloc[0], '\n')
 
 #Retrieve the customer with the latest check in date
+print('Retrieve the customer with the latest check in date \n')
 df.sort_values(by=["Last Check-In Date"], inplace=True, ascending=False)
-if(df.isnull().iloc[0,2]):
-  print('Street of this register is empty')
-if(df.isnull().iloc[0,3]):
-  print('Zip of this register is empty')
-if(df.isnull().iloc[0,4]):
-  print('City of this register is empty')
-if(df.isnull().iloc[0,6]):
-  print('Last Check-in Date of this register is empty')
-if(df.isnull().iloc[0,9]):
-  print('Company of this register is empty')
-  
 print(df.iloc[0], '\n')
 
 #Retrieve a list of customer’s full names ordered alphabetically.
+print('Retrieve a list of customer’s full names ordered alphabetically \n')
 df.sort_values(by=["Last Name"], inplace=True, ascending=True)
-print(df[['First Name', 'Last Name']], '\n')
+cust_list = df[['First Name', 'Last Name']].values.tolist()
+print(cust_list, '\n')
 
 #Retrieve a list of the companies user’s jobs ordered alphabetically.
-df.sort_values(by=["Job"], inplace=True, ascending=True)
-print(df[['First Name', 'Last Name', 'Job', 'Company']], '\n')
-
-
+print('Retrieve a list of the companies user’s jobs ordered alphabetically \n')
+df.sort_values(by=["Job"], inplace=True)
+jobs_list = df['Job'].values.tolist()
+print(jobs_list, '\n')
